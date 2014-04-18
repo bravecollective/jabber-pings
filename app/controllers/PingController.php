@@ -91,7 +91,7 @@ class PingController extends BaseController
 
 			$host = Config::get('jabber.server');
 			$user = Config::get('jabber.user');
-			$pass = Config::get('jabber.pass');
+			$pass = Config::get('jabber.password');
 
 
 			$client = new JAXL(array(
