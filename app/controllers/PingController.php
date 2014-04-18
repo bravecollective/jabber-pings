@@ -102,6 +102,8 @@ class PingController extends BaseController
 				$client->send_end_stream();
 			});
 
+			$client->start();
+
 			return Redirect::route('home')
 				->with('flash_msg', 'Ping Sent');
 		}
