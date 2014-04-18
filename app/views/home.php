@@ -42,11 +42,12 @@ if (Session::has('flash_msg'))
 				<?php
 				foreach($pings as $ping)
 				{
+					$user = ApiUser::find($ping->user_id);
 					?>
 					<tr>
-						<td><?=$ping?></td>
-						<td><?=$ping?></td>
-						<td><pre><?=$ping?></pre></td>
+						<td><?=$user->character_name?> (<?=$user->alliance_name?>)</td>
+						<td><?=$ping->created_at?></td>
+						<td><pre><?=$ping->message?></pre></td>
 					</tr>
 					<?php
 				}
