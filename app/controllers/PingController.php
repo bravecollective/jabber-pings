@@ -21,10 +21,10 @@ class PingController extends BaseController
 
 	public function listAllPingsView()
 	{
-		$pings = Timers::orderBy('created_at', 'desc')->paginate(10);
+		$pings = Ping::orderBy('created_at', 'desc')->paginate(10);
 		$pings->setBaseUrl('history');
 
-		// make timers page
+		// make ping page
 		$pageContentView = View::make('home')
 			->with(array('pings' => $pings));
 
@@ -39,9 +39,9 @@ class PingController extends BaseController
 
 	public function listPingHistoryView()
 	{
-		$pings = Timers::orderBy('created_at', 'desc')->paginate(30);
+		$pings = Ping::orderBy('created_at', 'desc')->paginate(30);
 
-		// make timers page
+		// make Ping history page
 		$pageContentView = View::make('history', array('pings' => $pings, 'paginate' => true));
 
 
@@ -96,7 +96,7 @@ class PingController extends BaseController
 				'log_level' => JAXL_INFO
 			));
 
-			$client->add_cb('on_auth_success', function() use ($client) {
+			$client->add_cb('on_auth_success', function() use ($client, $ping_text) {
 				$client->set_status('Available');
 				$client->send_chat_msg(Config::get('jabber.server').'/announce/online', $ping_text);
 				$client->send_end_stream();
