@@ -93,12 +93,25 @@ class PingController extends BaseController
 				'log_path' => './jaxl.log',
 				'jid' => Config::get('jabber.user').'@'.Config::get('jabber.server'),
 				'pass' => Config::get('jabber.pass'),
-				'log_level' => JAXL_INFO
+				'log_level' => JAXL_DEBUG
 			));
 
 			$client->add_cb('on_auth_success', function() use ($client, $ping_text) {
 				$client->send_chat_msg(Config::get('jabber.server').'/announce/online', $ping_text);
 				$client->send_end_stream();
+			});
+
+			$client->add_cb('on_auth_failure', function($reason)
+			{
+				global $client;
+				$client->send_end_stream();
+				_info("got on_auth_failure cb with reason $reason");
+
+			});
+
+			$client->add_cb('on_disconnect', function()
+			{
+				_info("got on_disconnect cb");
 			});
 
 			$client->start();
