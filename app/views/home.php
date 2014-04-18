@@ -52,7 +52,7 @@ if (Session::has('flash_msg'))
 						<td><?=$ping->created_at?></td>
 						<td><pre><?=$ping->message?></pre></td>
 						<td>
-							<a href="#" class="btn btn-info btn-xs viewPing">View</a>
+							<a href="#" class="btn btn-info btn-xs viewPing">View Text</a>
 						</td>
 					</tr>
 					<?php
