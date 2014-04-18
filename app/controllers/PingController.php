@@ -37,7 +37,7 @@ class PingController extends BaseController
 		return $layoutView;
 	}
 
-	public function listPingsHistoryView()
+	public function listPingHistoryView()
 	{
 		$pings = Timers::orderBy('created_at', 'desc')->paginate(30);
 

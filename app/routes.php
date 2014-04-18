@@ -24,24 +24,14 @@ Route::group(array('before' => 'guest'), function()
 Route::group(array('before' => 'auth'), function()
 {
 	// Basic URLs
-	Route::get('/', array('as' => 'home', 'uses' => 'TimerController@listAllTimersView'));
-	Route::get('active', array('as' => 'active', 'uses' => 'TimerController@listActiveTimersView'));
-	Route::get('expired', array('as' => 'expired', 'uses' => 'TimerController@listExpiredTimersView'));
+	Route::get('/', array('as' => 'home', 'uses' => 'PingController@listAllPingsView'));
+	Route::get('history', array('as' => 'expired', 'uses' => 'PingController@listPingHistoryView'));
 
 	Route::group(array('before' => 'edit'), function()
 	{
-		Route::get('search', array('as' => 'search_map', 'uses' => 'TimerController@searchCelestialAction'));
 
-		Route::get('add', array('as' => 'add_timer', 'uses' => 'TimerController@addTimerView'));
-		Route::post('add', array('uses' => 'TimerController@addTimerAction'));
-
-		// modify status
-		Route::get('bash/{id}', array('as' => 'bash_timer', 'uses' => 'TimerController@bashTimerAction'));
-		Route::get('win/{id}', array('as' => 'win_timer', 'uses' => 'TimerController@winTimerAction'));
-		Route::get('fail/{id}', array('as' => 'fail_timer', 'uses' => 'TimerController@failTimerAction'));
-
-		// delete timer
-		Route::get('delete/{id}', array('as' => 'delete_timer', 'uses' => 'TimerController@deleteTimerAction'));
+		Route::get('new', array('as' => 'add_timer', 'uses' => 'PingController@addPingView'));
+		Route::post('new', array('uses' => 'PingController@addPingAction'));
 	});
 
 	//
