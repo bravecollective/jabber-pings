@@ -15,9 +15,9 @@ $client = new JAXL(array(
 	                   'log_level' => JAXL_INFO
                    ));
 
-$client->add_cb('on_auth_success', function() use ($client, $ping_text) {
+$client->add_cb('on_auth_success', function() use ($client, $ping_text, $host) {
 	$client->set_status('Available');
-	$client->send_chat_msg(Config::get('jabber.server').'/announce/online', $ping_text);
+	$client->send_chat_msg($host.'/announce/online', $ping_text);
 	$client->send_end_stream();
 });
 
