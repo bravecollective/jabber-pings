@@ -37,7 +37,7 @@ if (Session::has('flash_msg'))
 						<th>Date</th>
 						<th style="width: 60%;">Message</th>
 						<th>
-							<a href="" class="btn btn-info btn-xs viewPing">View</a>
+							Actions
 						</th>
 					</tr>
 				</thead>
