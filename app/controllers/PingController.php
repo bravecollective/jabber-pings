@@ -98,7 +98,7 @@ class PingController extends BaseController
 				'log_path' => './jaxl.log',
 				'jid' => $user.'@'.$host,
 				'pass' => $pass,
-				'log_level' => JAXL_DEBUG
+				'log_level' => JAXL_ERROR
 			));
 
 			$client->add_cb('on_auth_success', function() use ($host, $client, $ping_text) {
