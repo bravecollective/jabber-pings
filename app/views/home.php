@@ -63,3 +63,5 @@ if (Session::has('flash_msg'))
 		</div>
 	</div>
 </div>
+
+<?=$pings->links()?>
