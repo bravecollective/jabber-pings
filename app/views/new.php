@@ -24,7 +24,7 @@ if (Session::has('flash_error'))
 
 			<div class="form-group">
 				<?=Form::label('pingText', 'Ping Text')?>
-				<?=Form::textarea('pingText', $defaultPing, array('id' => 'pingText', 'class' => 'form-control'))?>
+				<?=Form::textarea('pingText', '', array('id' => 'pingText', 'class' => 'form-control'))?>
 			</div>
 
 			<div class="form-group">
