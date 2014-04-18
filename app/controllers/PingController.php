@@ -101,15 +101,14 @@ class PingController extends BaseController
 				$client->send_end_stream();
 			});
 
-			$client->add_cb('on_auth_failure', function($reason)
+			$client->add_cb('on_auth_failure', function($reason) use ($client)
 			{
-				global $client;
 				$client->send_end_stream();
-				_info("got on_auth_failure cb with reason $reason");
+				_info("got on_auth_failure cb with reason: $reason");
 
 			});
 
-			$client->add_cb('on_disconnect', function()
+			$client->add_cb('on_disconnect', function() use ($client)
 			{
 				_info("got on_disconnect cb");
 			});
