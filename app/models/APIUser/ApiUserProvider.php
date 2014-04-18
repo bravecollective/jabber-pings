@@ -76,6 +76,16 @@ class ApiUserProvider implements UserProviderInterface {
 		}
 	}
 
+	public function retrieveByToken($identifier, $token)
+	{
+
+	}
+
+	public function updateRememberToken(UserInterface $user, $token)
+	{
+
+	}
+
 	private function updateUser($token, $result)
 	{
 		// validate permissions
@@ -107,6 +117,7 @@ class ApiUserProvider implements UserProviderInterface {
 			$userfound = ApiUser::create(array(
 				                'id' => $result->character->id,
 				                'token' => $token,
+				                'remember_token' => '',
 				                'character_name' => $result->character->name,
 				                'alliance_id' => $result->alliance->id,
 				                'alliance_name' => $result->alliance->name,
