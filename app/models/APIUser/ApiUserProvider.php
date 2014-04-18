@@ -40,6 +40,9 @@ class ApiUserProvider implements UserProviderInterface {
 		}
 		catch(Exception $e)
 		{
+			echo "\n\n";
+			echo $e->getMessage();
+			echo "\n\n";
 			echo "Credentials:\n";
 			var_dump($credentials);
 			echo "\n\n";
