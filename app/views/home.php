@@ -35,7 +35,10 @@ if (Session::has('flash_msg'))
 					<tr>
 						<th>Name</th>
 						<th>Date</th>
-						<th>Message</th>
+						<th style="width: 60%;">Message</th>
+						<th>
+							<a href="" class="btn btn-info btn-xs viewPing">View</a>
+						</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -48,6 +51,9 @@ if (Session::has('flash_msg'))
 						<td><?=$user->character_name?> (<?=$user->alliance_name?>)</td>
 						<td><?=$ping->created_at?></td>
 						<td><pre><?=$ping->message?></pre></td>
+						<td>
+							<a href="#" class="btn btn-info btn-xs viewPing">View</a>
+						</td>
 					</tr>
 					<?php
 				}
