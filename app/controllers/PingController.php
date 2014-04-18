@@ -44,7 +44,6 @@ class PingController extends BaseController
 		// make Ping history page
 		$pageContentView = View::make('history', array('pings' => $pings, 'paginate' => true));
 
-
 		// make main layout page
 		$layoutView = View::make(self::LAYOUT)
 		                  ->with('page_content', $pageContentView)
@@ -91,6 +90,7 @@ class PingController extends BaseController
 			               ));
 
 			$client = new JAXL(array(
+				'log_path' => './jaxl.log',
 				'jid' => Config::get('jabber.user').'@'.Config::get('jabber.server'),
 				'pass' => Config::get('jabber.pass'),
 				'log_level' => JAXL_INFO
@@ -103,9 +103,10 @@ class PingController extends BaseController
 
 			$client->start();
 
-			exit;
-			return Redirect::route('home')
-				->with('flash_msg', 'Ping Sent');
+
+			Redirect::route('home')->with('flash_msg', 'Ping Sent');
+			//exit;
+			//return Redirect::route('home')->with('flash_msg', 'Ping Sent');
 		}
 	}
 }
