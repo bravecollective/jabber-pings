@@ -1,7 +1,7 @@
 <div class="page-header" style="margin: 0 0 20px;">
 	<h2>
-		<a href="<?=URL::route('home')?>" class="pull-right btn btn-default">Back to List</a>
-		Add Timer
+		<a href="<?=URL::route('home')?>" class="pull-right btn btn-default">Back to Pings</a>
+		New Ping
 	</h2>
 </div>
 
