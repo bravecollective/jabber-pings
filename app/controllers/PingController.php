@@ -89,15 +89,20 @@ class PingController extends BaseController
 				               'user_id' => Auth::user()->id,
 			               ));
 
+			$host = Config::get('jabber.server');
+			$user = Config::get('jabber.user');
+			$pass = Config::get('jabber.pass');
+
+
 			$client = new JAXL(array(
 				'log_path' => './jaxl.log',
-				'jid' => Config::get('jabber.user').'@'.Config::get('jabber.server'),
-				'pass' => Config::get('jabber.pass'),
+				'jid' => $host.'@'.$user,
+				'pass' => $pass,
 				'log_level' => JAXL_DEBUG
 			));
 
-			$client->add_cb('on_auth_success', function() use ($client, $ping_text) {
-				$client->send_chat_msg(Config::get('jabber.server').'/announce/online', $ping_text);
+			$client->add_cb('on_auth_success', function() use ($host, $client, $ping_text) {
+				$client->send_chat_msg($host.'/announce/online', $ping_text);
 				$client->send_end_stream();
 			});
 
