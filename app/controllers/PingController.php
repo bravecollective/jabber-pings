@@ -21,7 +21,7 @@ class PingController extends BaseController
 
 	public function listAllPingsView()
 	{
-		$pings = Ping::orderBy('created_at', 'desc')->paginate(10);
+		$pings = Ping::orderBy('created_at', 'desc')->paginate(20);
 		$pings->setBaseUrl('history');
 
 		// make ping page
@@ -39,7 +39,7 @@ class PingController extends BaseController
 
 	public function listPingHistoryView()
 	{
-		$pings = Ping::orderBy('created_at', 'desc')->paginate(30);
+		$pings = Ping::orderBy('created_at', 'desc')->paginate(20);
 
 		// make Ping history page
 		$pageContentView = View::make('history', array('pings' => $pings, 'paginate' => true));
