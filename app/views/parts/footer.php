@@ -7,7 +7,7 @@
 	</div>
 </div>
 
-<div class="modalBuilder" style="display: none">
+<div class="modalBuilder">
 	<!-- Modal -->
 	<div class="modal fade" id="pingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -45,7 +45,7 @@
 			$('.modal-body', '.modalBuilder .modal').html(msg);
 
 			$('#pingModal').modal({
-				keyboard: false
+				keyboard: true
 			});
 		});
 
