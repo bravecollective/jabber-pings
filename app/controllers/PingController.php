@@ -108,7 +108,7 @@ class PingController extends BaseController
 			));
 
 			// add logging text ot the bottom of the ping
-			$ping_text .= "\n\n##### SENT BY: ".Auth::user()->character_name." TO online.all ON ".$ping->created_at." #####";
+			$ping_text .= "\n\n##### SENT BY: ".Auth::user()->character_name." (".Auth::user()->alliance_name."); TO: online.all; WHEN: ".$ping->created_at." #####";
 
 			// Add Callbacks
 			$client->add_cb('on_auth_success', function() use ($host, $client, $ping_text) {
