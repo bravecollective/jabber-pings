@@ -36,7 +36,7 @@ class CreateUsersTable extends Migration {
 			$t->timestamps();
 		});
 
-		Schema::create('ping', function($t)
+		Schema::create('pings', function($t)
 		{
 			$t->increments('id')->unsigned();
 			$t->text('message');
