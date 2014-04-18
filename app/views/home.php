@@ -36,9 +36,7 @@ if (Session::has('flash_msg'))
 						<th>Name</th>
 						<th>Date</th>
 						<th style="width: 60%;">Message</th>
-						<th>
-							Actions
-						</th>
+						<th>Actions</th>
 					</tr>
 				</thead>
 				<tbody>

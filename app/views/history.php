@@ -28,6 +28,7 @@ if (Session::has('flash_msg'))
 					<th>Name</th>
 					<th>Date</th>
 					<th>Message</th>
+					<th>Actions</th>
 				</tr>
 				</thead>
 				<tbody>
