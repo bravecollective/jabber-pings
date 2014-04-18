@@ -1,0 +1,8 @@
+#!/bin/sh
+
+git pull
+php composer.phar upgrade
+php composer.phar dumpautoload
+php artisan optimize
+php artisan migrate
+service php-fpm restart
