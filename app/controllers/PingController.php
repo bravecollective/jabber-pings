@@ -97,13 +97,13 @@ class PingController extends BaseController
 			));
 
 			$client->add_cb('on_auth_success', function() use ($client, $ping_text) {
-				$client->set_status('Available');
 				$client->send_chat_msg(Config::get('jabber.server').'/announce/online', $ping_text);
 				$client->send_end_stream();
 			});
 
 			$client->start();
 
+			exit;
 			return Redirect::route('home')
 				->with('flash_msg', 'Ping Sent');
 		}
