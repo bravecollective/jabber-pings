@@ -20,7 +20,7 @@ if (Session::has('flash_msg'))
 	<div class="col-lg-12">
 		<h3>
 			<?php
-			if(Auth::user()->permission === 1)
+			if(Auth::user()->permission === '1')
 			{
 				?>
 				<a href="<?=URL::to('new')?>" class="btn btn-success pull-right btn-sm">New</a>
