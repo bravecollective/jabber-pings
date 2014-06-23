@@ -86,7 +86,7 @@ class PingController extends BaseController
 		else
 		{
 
-			$ping_text = Input::get('pingText');
+			$ping_text = "\n".Input::get('pingText');
 
 			// Log Ping
 			$ping = Ping::create(array(
