@@ -15,7 +15,8 @@ return array(
 	'server' => '',   // must be HTTPS
 	'user' => '',   // must be HTTPS
 	'password' => '', // from core auth
-	'default-text' => 'Fleet Name:
+	'default-text' => '
+Fleet Name:
 FC:
 BRAVE Mumble, Channel:
 Ship Types:
