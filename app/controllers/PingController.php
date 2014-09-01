@@ -110,18 +110,20 @@ class PingController extends BaseController
 			$ping_group = Input::get('pingGroup', false);
 
 			// get group ID
-			if($ping_group)
+			$group_id = 1;
+			if($ping_group !== false)
 			{
 				$group = Group::where('key', '=', Input::get('pingGroup'))->first();
+				$group_id = $group->id;
 			}
 
 			$ping = Ping::create(array(
 				'message' => $ping_text,
-				'group_id' => $group->id,
+				'group_id' => $group_id,
 				'user_id' => Auth::user()->id,
 			));
 
-			if($ping_group)
+			if($ping_group !== false)
 			{
 				$this->_sendGroupPing($ping, Input::get('pingGroup'));
 			}
