@@ -42,7 +42,7 @@ if (Session::has('flash_error'))
 			<div class="checkbox">
 				<?=Form::hidden('legacyPing', '0')?>
 				<label>
-					<?=Form::checkbox('legacyPing', 1, true, array('id' => 'legacyPing', 'class' => 'form-control'))?>
+					<?=Form::checkbox('legacyPing', 1, true, array('id' => 'legacyPing'))?>
 					Ping To Old Jabber Server?
 				</label>
 			</div>
