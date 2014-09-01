@@ -189,7 +189,7 @@ class PingController extends BaseController
 			'log_path' => './jaxl.log',
 			'jid' => $user.'@'.$host,
 			'pass' => $pass,
-			'log_level' => JAXL_ERROR
+			'log_level' => JAXL_DEBUG
 		));
 
 		// add logging text ot the bottom of the ping
