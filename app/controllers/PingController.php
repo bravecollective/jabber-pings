@@ -28,8 +28,8 @@ class PingController extends BaseController
 		}
 		$allowed_groups = array_keys(ApiUser::allCanReceive($user));
 
-
-		$pings = Ping::with('group')->whereIn('group.key', $allowed_groups)->orderBy('created_at', 'desc')->paginate(20);
+		$group_ids = Group::whereIn('key', $allowed_groups)->lists('id');
+		$pings = Ping::with('group')->whereIn('group_id', $group_ids)->orderBy('created_at', 'desc')->paginate(20);
 		$pings->setBaseUrl('history');
 
 		// make ping page
