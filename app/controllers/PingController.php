@@ -137,7 +137,7 @@ class PingController extends BaseController
 		}
 	}
 
-	function _sendLegacyPing($ping)
+	function _sendLegacyPing(Ping $ping)
 	{
 		// Config Details
 		$host = Config::get('jabber.legacy-server');
@@ -177,7 +177,7 @@ class PingController extends BaseController
 		$client->start();
 	}
 
-	function _sendGroupPing($ping, $group)
+	function _sendGroupPing(Ping $ping, $group)
 	{
 		// Config Details
 		$host = Config::get('jabber.server');
