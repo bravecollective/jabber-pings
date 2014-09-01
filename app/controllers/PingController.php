@@ -105,10 +105,12 @@ class PingController extends BaseController
 				               ->withInput();
 			}
 
+			// ping details
 			$ping_text = "\n".Input::get('pingText');
+			$ping_group = Input::get('pingGroup', false);
 
 			// get group ID
-			if(Input::get('pingGroup', false))
+			if($ping_group)
 			{
 				$group = Group::where('key', '=', Input::get('pingGroup'))->first();
 			}
@@ -119,16 +121,11 @@ class PingController extends BaseController
 				'user_id' => Auth::user()->id,
 			));
 
-			$this->_sendLegacyPing($ping);
-			if(Input::get('pingGroup', false))
+			if($ping_group)
 			{
-				$this->_sendLegacyPing($ping);
 				$this->_sendGroupPing($ping, Input::get('pingGroup'));
 			}
-			else
-			{
-				$this->_sendLegacyPing($ping);
-			}
+			$this->_sendLegacyPing($ping);
 
 			// Redirect when complete
 			return Redirect::route('home')->with('flash_msg', 'Ping Was Sent!');
@@ -197,7 +194,7 @@ class PingController extends BaseController
 
 		// Add Callbacks
 		$client->add_cb('on_auth_success', function() use ($host, $client, $ping_text) {
-			$client->send_chat_msg($host.'/announce/online', $ping_text);
+			$client->send_chat_msg($host.'/announce/'.$group, $ping_text);
 			$client->send_end_stream();
 		});
 		$client->add_cb('on_auth_failure', function($reason) use ($client)
