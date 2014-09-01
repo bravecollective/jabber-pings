@@ -146,7 +146,7 @@ class PingController extends BaseController
 
 		// Create Client
 		$client = new JAXL(array(
-			'log_path' => './jaxl.log',
+			'log_path' => './legacy_jaxl.log',
 			'jid' => $user.'@'.$host,
 			'pass' => $pass,
 			'log_level' => JAXL_ERROR
