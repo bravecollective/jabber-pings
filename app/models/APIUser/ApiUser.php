@@ -60,4 +60,48 @@ class ApiUser extends Eloquent implements UserInterface {
 		return 'remember_token';
 	}
 
+	public function getCanSend()
+	{
+		$groups = [];
+		$namespace = Config::get('braveapi.application-permission-namespace');
+		$perms = json_decode($this->user_permissions);
+
+		if($perms === null)
+		{
+			return [];
+		}
+
+		foreach($perms as $perm)
+		{
+			if(substr($perm, 0, strlen($namespace.'send.')) == $namespace.'send.')
+			{
+				$groups[] = substr($perm, strlen($namespace.'send.'));
+			}
+		}
+
+		return $groups;
+	}
+
+	public function getCanReceive()
+	{
+		$groups = [];
+		$namespace = Config::get('braveapi.application-permission-namespace');
+		$perms = json_decode($this->user_permissions);
+
+		if($perms === null)
+		{
+			return [];
+		}
+
+		foreach($perms as $perm)
+		{
+			if(substr($perm, 0, strlen($namespace.'receive.')) == $namespace.'receive.')
+			{
+				$groups[] = substr($perm, strlen($namespace.'receive.'));
+			}
+		}
+
+		return $groups;
+	}
+
 }

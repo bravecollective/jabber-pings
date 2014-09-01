@@ -129,6 +129,9 @@ class ApiUserProvider implements UserProviderInterface {
 				if(substr($perm, 0, strlen($namespace)) == $namespace)
 				{
 					$relevant_perms[] = $perm;
+					$key = explode('.', $perm);
+					$key = end($key);
+					Group::firstOrCreate(array('key' => $key));
 				}
 			}
 		}
