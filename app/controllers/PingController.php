@@ -26,7 +26,7 @@ class PingController extends BaseController
 		{
 			dd($user);
 		}
-		$allowed_groups = array_keys($user->getCanRecieve());
+		$allowed_groups = array_keys($user->allCanRecieve());
 
 
 		$pings = Ping::with('group')->whereIn('group.key', $allowed_groups)->orderBy('created_at', 'desc')->paginate(20);
@@ -68,7 +68,7 @@ class PingController extends BaseController
 			// make Ping history page
 		$pageContentView = View::make('new', array(
 			'defaultPingText' => $defaultPingText,
-			'pingGroups' => Auth::user()->getCanSend()
+			'pingGroups' => Auth::user()->allCanSend()
 		));
 
 		$this->layout = self::LAYOUT;
@@ -96,7 +96,7 @@ class PingController extends BaseController
 		}
 		else
 		{
-			$groups = Auth::user()->getCanSend();
+			$groups = Auth::user()->allCanSend();
 			$slug = Input::get('pingGroup');
 			if(!isset($groups[$slug]))
 			{

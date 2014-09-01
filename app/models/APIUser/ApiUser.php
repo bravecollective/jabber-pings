@@ -60,7 +60,7 @@ class ApiUser extends Eloquent implements UserInterface {
 		return 'remember_token';
 	}
 
-	public function getCanSend()
+	public function allCanSend()
 	{
 		$groups = [];
 		$namespace = Config::get('braveapi.application-permission-namespace');
@@ -83,7 +83,7 @@ class ApiUser extends Eloquent implements UserInterface {
 		return $groups;
 	}
 
-	public function getCanReceive()
+	public function allCanReceive()
 	{
 		$groups = [];
 		$namespace = Config::get('braveapi.application-permission-namespace');
