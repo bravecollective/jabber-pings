@@ -15,7 +15,7 @@ class ModifyUsersTable extends Migration {
 
         Schema::table('api_users', function($table)
         {
-            $table->text('permissions');
+            $table->text('user_permissions');
         });
 	}
 
@@ -29,7 +29,7 @@ class ModifyUsersTable extends Migration {
 
         Schema::table('api_users', function($table)
         {
-            $table->dropColumn('permissions');
+            $table->dropColumn('user_permissions');
         });
 	}
 

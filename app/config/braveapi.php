@@ -13,6 +13,7 @@ return array(
 	*/
 
 	'application-endpoint' => '',   // must be HTTPS
+	'application-permission-namespace' => '', // permission namespace for your application in core
 
 	'application-identifier' => '', // from core auth
 	'local-private-key' => '',      // from local key generation

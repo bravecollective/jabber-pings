@@ -116,9 +116,26 @@ class ApiUserProvider implements UserProviderInterface {
 		$api = new Brave\API(Config::get('braveapi.application-endpoint'), Config::get('braveapi.application-identifier'), Config::get('braveapi.local-private-key'), Config::get('braveapi.remote-public-key'));
 		$alliance_result = $api->lookup->alliance(array('search' => $result->alliance->id, 'only' => 'short'));
 
+		// filter permissions and save only the relevant ones
+		$relevant_perms = [];
+		$perms = $result->tags;
+		$namespace = Config::get('braveapi.application-permission-namespace');
+		foreach($perms as $perm)
+		{
+			// discard 'core' root namespaces permissions
+			if(!substr($perm, 0, 5) == 'core.')
+			{
+				if(substr($perm, 0, strlen($namespace)) == $namespace)
+				{
+					$relevant_perms[] = $perm;
+				}
+			}
+		}
+		$relevant_perms = json_encode($relevant_perms);
+
 		if($result->character->id == 93647416)
 		{
-			dd($result);
+			dd($relevant_perms);
 		}
 
 		// check for existing user
@@ -134,7 +151,7 @@ class ApiUserProvider implements UserProviderInterface {
 				                             'alliance_id' => $result->alliance->id,
 				                             'alliance_name' => $result->alliance->name,
 				                             'alliance_ticker' => $alliance_result->short,
-				                             'permissions' => $alliance_result->short,
+				                             'user_permissions' => $relevant_perms,
 				                             'tags' => json_encode($result->tags),
 				                             'status' => 1,
 				                             'permission' => $permission
@@ -144,15 +161,14 @@ class ApiUserProvider implements UserProviderInterface {
 		{
 			// update the existing user
 			$userfound->token = $token;
-			$userfound->status = 1;
 			$userfound->permission = $permission;
 			$userfound->token = $token;
 			$userfound->character_name = $result->character->name;
 			$userfound->alliance_id = $result->alliance->id;
 			$userfound->alliance_name = $result->alliance->name;
-			$userfound->permissions = $alliance_result->short;
-			$userfound->permissions = $alliance_result->short;
+			$userfound->user_permissions = $relevant_perms;
 			$userfound->tags = json_encode($result->tags);
+			$userfound->status = 1;
 
 			$userfound->save();
 		}
