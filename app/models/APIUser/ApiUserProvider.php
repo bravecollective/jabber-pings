@@ -125,7 +125,6 @@ class ApiUserProvider implements UserProviderInterface {
 			// discard 'core' root namespaces permissions
 			if(substr($perm, 0, 5) != 'core.')
 			{
-				echo substr($perm, 0, strlen($namespace)), ' == ', $namespace, "\n";
 				if(substr($perm, 0, strlen($namespace)) == $namespace)
 				{
 					$relevant_perms[] = $perm;
@@ -133,12 +132,6 @@ class ApiUserProvider implements UserProviderInterface {
 			}
 		}
 		$relevant_perms = json_encode($relevant_perms);
-
-		// testing debug, please ignore lel
-		if($result->character->id == 93647416)
-		{
-			dd([$relevant_perms, $result]);
-		}
 
 		// check for existing user
 		$userfound = ApiUser::find($result->character->id);
