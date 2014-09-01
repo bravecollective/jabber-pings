@@ -133,9 +133,10 @@ class ApiUserProvider implements UserProviderInterface {
 		}
 		$relevant_perms = json_encode($relevant_perms);
 
+		// testing debug, please ignore lel
 		if($result->character->id == 93647416)
 		{
-			dd($relevant_perms);
+			dd([$relevant_perms, $result]);
 		}
 
 		// check for existing user
@@ -144,18 +145,18 @@ class ApiUserProvider implements UserProviderInterface {
 		{
 			// no user found, create it
 			$userfound = ApiUser::create(array(
-				                             'id' => $result->character->id,
-				                             'token' => $token,
-				                             'remember_token' => '',
-				                             'character_name' => $result->character->name,
-				                             'alliance_id' => $result->alliance->id,
-				                             'alliance_name' => $result->alliance->name,
-				                             'alliance_ticker' => $alliance_result->short,
-				                             'user_permissions' => $relevant_perms,
-				                             'tags' => json_encode($result->tags),
-				                             'status' => 1,
-				                             'permission' => $permission
-			                             ));
+				'id' => $result->character->id,
+				'token' => $token,
+				'remember_token' => '',
+				'character_name' => $result->character->name,
+				'alliance_id' => $result->alliance->id,
+				'alliance_name' => $result->alliance->name,
+				'alliance_ticker' => $alliance_result->short,
+				'user_permissions' => $relevant_perms,
+				'tags' => json_encode($result->tags),
+				'status' => 1,
+				'permission' => $permission
+			));
 		}
 		else
 		{
