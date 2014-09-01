@@ -12,7 +12,7 @@ class CreateGroupsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::table('groups', function($t)
+		Schema::create('groups', function($t)
 		{
 			$t->increments('id')->unsigned();
 			$t->text('key');
