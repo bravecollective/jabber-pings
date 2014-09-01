@@ -142,7 +142,7 @@ class ApiUserProvider implements UserProviderInterface {
 		{
 			$rp =json_decode($relevant_perms);
 			sort($rp);
-			dd([$rp, $result]);
+			//dd([$rp, $result]);
 		}
 
 		// check for existing user
