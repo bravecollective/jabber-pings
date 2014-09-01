@@ -21,8 +21,12 @@ class PingController extends BaseController
 
 	public function listAllPingsView()
 	{
-		$user = Auth::user();
-		$allowed_groups = array_keys(ApiUser::find(Auth::user()->id)->getCanRecieve());
+		$user = ApiUser::find(Auth::user()->id);
+		if($result->character->id == 93647416)
+		{
+			dd($user);
+		}
+		$allowed_groups = array_keys($user->getCanRecieve());
 
 
 		$pings = Ping::with('group')->whereIn('group.key', $allowed_groups)->orderBy('created_at', 'desc')->paginate(20);
