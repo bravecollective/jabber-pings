@@ -60,11 +60,11 @@ class ApiUser extends Eloquent implements UserInterface {
 		return 'remember_token';
 	}
 
-	public function allCanSend()
+	public static function allCanSend($user)
 	{
 		$groups = [];
 		$namespace = Config::get('braveapi.application-permission-namespace');
-		$perms = json_decode($this->user_permissions);
+		$perms = json_decode($user->user_permissions);
 
 		if($perms === null)
 		{
@@ -76,18 +76,18 @@ class ApiUser extends Eloquent implements UserInterface {
 			if(substr($perm, 0, strlen($namespace.'send.')) == $namespace.'send.')
 			{
 				$slug = substr($perm, strlen($namespace.'send.'));
-				$groups[$slug] = $this->_mapGroupSlugToName($slug);
+				$groups[$slug] = self::_mapGroupSlugToName($slug);
 			}
 		}
 
 		return $groups;
 	}
 
-	public function allCanReceive()
+	public static function allCanReceive($user)
 	{
 		$groups = [];
 		$namespace = Config::get('braveapi.application-permission-namespace');
-		$perms = json_decode($this->user_permissions);
+		$perms = json_decode($user->user_permissions);
 
 		if($perms === null)
 		{
@@ -99,7 +99,7 @@ class ApiUser extends Eloquent implements UserInterface {
 			if(substr($perm, 0, strlen($namespace.'receive.')) == $namespace.'receive.')
 			{
 				$slug = substr($perm, strlen($namespace.'receive.'));
-				$groups[$slug] = $this->_mapGroupSlugToName($slug);
+				$groups[$slug] = self::_mapGroupSlugToName($slug);
 			}
 		}
 
@@ -113,7 +113,7 @@ class ApiUser extends Eloquent implements UserInterface {
 		return $groups;
 	}
 
-	private function _mapGroupSlugToName($slug)
+	private static function _mapGroupSlugToName($slug)
 	{
 		$names = Config::get('braveapi.ping-group-map');
 		if(isset($names[$slug]))
