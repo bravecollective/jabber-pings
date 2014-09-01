@@ -40,6 +40,12 @@ if (Session::has('flash_error'))
 			</div>
 
 			<div class="form-group">
+				<?=Form::label('legacyPing', 'Ping To Old Jabber Server?')?>
+				<?=Form::hidden('legacyPing', '0');?>
+				<?=Form::checkbox('legacyPing', 1, true, array('id' => 'legacyPing', 'class' => 'form-control'))?> Yes
+			</div>
+
+			<div class="form-group">
 				<button type="submit" class="btn btn-primary">Send Ping</button>
 			</div>
 

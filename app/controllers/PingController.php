@@ -125,7 +125,12 @@ class PingController extends BaseController
 			{
 				$this->_sendGroupPing($ping, Input::get('pingGroup'));
 			}
-			$this->_sendLegacyPing($ping);
+
+			// ping to legacy server?
+			if(Input::get('legacyPing', false))
+			{
+				$this->_sendLegacyPing($ping);
+			}
 
 			// Redirect when complete
 			return Redirect::route('home')->with('flash_msg', 'Ping Was Sent!');
