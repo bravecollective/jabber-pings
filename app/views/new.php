@@ -39,10 +39,12 @@ if (Session::has('flash_error'))
 				<?=Form::textarea('pingText', $defaultPingText, array('id' => 'pingText', 'class' => 'form-control'))?>
 			</div>
 
-			<div class="form-group">
-				<?=Form::label('legacyPing', 'Ping To Old Jabber Server?')?>
-				<?=Form::hidden('legacyPing', '0');?>
-				<?=Form::checkbox('legacyPing', 1, true, array('id' => 'legacyPing', 'class' => 'form-control'))?> Yes
+			<div class="checkbox">
+				<?=Form::hidden('legacyPing', '0')?>
+				<label>
+					<?=Form::checkbox('legacyPing', 1, true, array('id' => 'legacyPing', 'class' => 'form-control'))?>
+					Ping To Old Jabber Server?
+				</label>
 			</div>
 
 			<div class="form-group">
