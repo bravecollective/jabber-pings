@@ -123,8 +123,9 @@ class ApiUserProvider implements UserProviderInterface {
 		foreach($perms as $perm)
 		{
 			// discard 'core' root namespaces permissions
-			if(!substr($perm, 0, 5) == 'core.')
+			if(substr($perm, 0, 5) != 'core.')
 			{
+				echo substr($perm, 0, strlen($namespace)), ' == ', $namespace, "\n";
 				if(substr($perm, 0, strlen($namespace)) == $namespace)
 				{
 					$relevant_perms[] = $perm;
