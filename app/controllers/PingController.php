@@ -96,8 +96,11 @@ class PingController extends BaseController
 		}
 		else
 		{
+			//
 			$groups = ApiUser::allCanSend(Auth::user());
 			$slug = Input::get('pingGroup');
+
+			//
 			if(!isset($groups[$slug]))
 			{
 				return Redirect::route('add_timer')
@@ -124,6 +127,7 @@ class PingController extends BaseController
 				'user_id' => Auth::user()->id,
 			));
 
+			// send the group ping
 			if($ping_group !== false)
 			{
 				$this->_sendGroupPing($ping, Input::get('pingGroup'));

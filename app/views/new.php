@@ -32,6 +32,10 @@ if (Session::has('flash_error'))
 				</div>
 				<?php
 			}
+			else
+			{
+				echo Form::hidden('pingGroup', 'hero');
+			}
 			?>
 
 			<div class="form-group">
@@ -43,13 +47,13 @@ if (Session::has('flash_error'))
 			if(!empty($pingGroups))
 			{
 			?>
-			<div class="checkbox">
-				<?=Form::hidden('legacyPing', '0')?>
-				<label>
-					<?=Form::checkbox('legacyPing', 1, true, array('id' => 'legacyPing'))?>
-					Ping To Old Jabber Server?
-				</label>
-			</div>
+				<div class="checkbox">
+					<?=Form::hidden('legacyPing', '0')?>
+					<label>
+						<?=Form::checkbox('legacyPing', 1, true, array('id' => 'legacyPing'))?>
+						Ping To Old Jabber Server?
+					</label>
+				</div>
 			<?php
 			}
 			else
