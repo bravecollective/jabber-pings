@@ -26,7 +26,7 @@ class PingController extends BaseController
 		{
 			//dd($user);
 		}
-		$allowed_groups = array_keys(ApiUser::allCanRecieve($user));
+		$allowed_groups = array_keys(ApiUser::allCanReceive($user));
 
 
 		$pings = Ping::with('group')->whereIn('group.key', $allowed_groups)->orderBy('created_at', 'desc')->paginate(20);
