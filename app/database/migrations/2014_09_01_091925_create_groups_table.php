@@ -22,7 +22,7 @@ class CreateGroupsTable extends Migration {
 		// update the pings table
 		Schema::table('pings', function($table)
 		{
-			$table->integer('group');
+			$table->integer('group_id');
 		});
 	}
 
@@ -37,7 +37,7 @@ class CreateGroupsTable extends Migration {
 		Schema::drop('groups');
         Schema::table('pings', function($table)
         {
-            $table->dropColumn('group');
+            $table->dropColumn('group_id');
         });
 	}
 
