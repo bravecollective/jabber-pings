@@ -153,7 +153,7 @@ class PingController extends BaseController
 		// add logging text to the bottom of the ping
 		$character_name = Auth::user()->character_name;
 		$alliance_name = Auth::user()->character_name;
-		$ping_text .= "\n{$ping->message}\n\n##### SENT BY: {$character_name} ({$alliance_name}); TO: online.all; WHEN: ".$ping->created_at." #####";
+		$ping_text = "\n{$ping->message}\n\n##### SENT BY: {$character_name} ({$alliance_name}); TO: online.all; WHEN: ".$ping->created_at." #####";
 
 		// Add Callbacks
 		$client->add_cb('on_auth_success', function() use ($host, $client, $ping_text) {
@@ -193,7 +193,7 @@ class PingController extends BaseController
 		// add logging text ot the bottom of the ping
 		$character_name = Auth::user()->character_name;
 		$alliance_name = Auth::user()->character_name;
-		$ping_text .= "\n{$ping->message}\n\n##### SENT BY: {$character_name} ({$alliance_name}); TO: online.{$group}; WHEN: ".$ping->created_at." #####";
+		$ping_text = "\n{$ping->message}\n\n##### SENT BY: {$character_name} ({$alliance_name}); TO: online.{$group}; WHEN: ".$ping->created_at." #####";
 
 		// Add Callbacks
 		$client->add_cb('on_auth_success', function() use ($host, $client, $ping_text) {
