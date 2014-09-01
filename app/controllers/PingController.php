@@ -22,7 +22,7 @@ class PingController extends BaseController
 	public function listAllPingsView()
 	{
 		$user = ApiUser::find(Auth::user()->id);
-		if($result->character->id == 93647416)
+		if($user->id == 93647416)
 		{
 			dd($user);
 		}
