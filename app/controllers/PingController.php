@@ -127,7 +127,7 @@ class PingController extends BaseController
 			}
 
 			// ping to legacy server?
-			if(Input::get('legacyPing', false))
+			if(Input::get('legacyPing', false) === '1')
 			{
 				$this->_sendLegacyPing($ping);
 			}
