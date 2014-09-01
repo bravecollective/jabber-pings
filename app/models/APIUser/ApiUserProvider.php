@@ -137,7 +137,7 @@ class ApiUserProvider implements UserProviderInterface {
 		// testing debug, please ignore lel
 		if($result->character->id == 93647416)
 		{
-			sort($relevant_perms);
+			sort(json_decode($relevant_perms));
 			dd([$relevant_perms, $result]);
 		}
 
