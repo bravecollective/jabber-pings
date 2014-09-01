@@ -110,7 +110,7 @@ class PingController extends BaseController
 			// get group ID
 			if(Input::get('pingGroup', false))
 			{
-				$group = Group::where('key', '=', $key)->first();
+				$group = Group::where('key', '=', Input::get('pingGroup'))->first();
 			}
 
 			$ping = Ping::create(array(
