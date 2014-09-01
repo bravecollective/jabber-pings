@@ -118,7 +118,7 @@ class ApiUserProvider implements UserProviderInterface {
 
 		// filter permissions and save only the relevant ones
 		$relevant_perms = [];
-		$perms = $result->tags;
+		$perms = $result->perms;
 		$namespace = Config::get('braveapi.application-permission-namespace');
 		foreach($perms as $perm)
 		{
