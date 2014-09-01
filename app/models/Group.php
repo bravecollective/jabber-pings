@@ -28,4 +28,9 @@ class Group extends Eloquent{
 		'key',
 	);
 
+	public function ping()
+	{
+		return $this->hasMany('Ping');
+	}
+
 }

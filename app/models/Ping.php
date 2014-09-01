@@ -38,9 +38,4 @@ class Ping extends Eloquent{
 		'message'
 	);
 
-	public function group()
-	{
-		return $this->hasOne('Group');
-	}
-
 }
