@@ -39,6 +39,10 @@ if (Session::has('flash_error'))
 				<?=Form::textarea('pingText', $defaultPingText, array('id' => 'pingText', 'class' => 'form-control'))?>
 			</div>
 
+			<?php
+			if(!empty($pingGroups))
+			{
+			?>
 			<div class="checkbox">
 				<?=Form::hidden('legacyPing', '0')?>
 				<label>
@@ -46,6 +50,13 @@ if (Session::has('flash_error'))
 					Ping To Old Jabber Server?
 				</label>
 			</div>
+			<?php
+			}
+			else
+			{
+				echo Form::hidden('legacyPing', '1');
+			}
+			?>
 
 			<div class="form-group">
 				<button type="submit" class="btn btn-primary">Send Ping</button>

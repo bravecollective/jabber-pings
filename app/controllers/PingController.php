@@ -117,6 +117,7 @@ class PingController extends BaseController
 				$group_id = $group->id;
 			}
 
+			// save ping to DB
 			$ping = Ping::create(array(
 				'message' => $ping_text,
 				'group_id' => $group_id,
@@ -128,7 +129,7 @@ class PingController extends BaseController
 				$this->_sendGroupPing($ping, Input::get('pingGroup'));
 			}
 
-			// ping to legacy server?
+			// requested ping to legacy server?
 			if(Input::get('legacyPing', false) === '1')
 			{
 				$this->_sendLegacyPing($ping);
