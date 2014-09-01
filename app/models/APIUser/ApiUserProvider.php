@@ -131,7 +131,7 @@ class ApiUserProvider implements UserProviderInterface {
 					$relevant_perms[] = $perm;
 					$key = explode('.', $perm);
 					$key = end($key);
-					Group::firstOrCreate(array('key' => $key));
+					Group::firstOrCreate(array('key' => strtolower($key)));
 				}
 			}
 		}

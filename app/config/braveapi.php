@@ -23,4 +23,10 @@ return array(
 	'auth-edit-tags' => array(),    // form core auth
 	'auth-edit-users' => array(),    // form core auth
 
+	'ping-group-map' => array(
+		'hero' => 'HERO Coalition',
+		'brave' => 'Brave Collective',
+		'fc' => 'HERO FCs',
+	)
+
 );

@@ -21,7 +21,10 @@ class PingController extends BaseController
 
 	public function listAllPingsView()
 	{
-		$pings = Ping::orderBy('created_at', 'desc')->paginate(20);
+		$allowed_groups = array_keys(Auth::user()->getCanRecieve());
+
+
+		$pings = Ping::with('group')->whereIn('group.key', $allowed_groups)->orderBy('created_at', 'desc')->paginate(20);
 		$pings->setBaseUrl('history');
 
 		// make ping page
@@ -58,7 +61,10 @@ class PingController extends BaseController
 		$defaultPingText = Config::get('jabber.default-text');
 
 			// make Ping history page
-		$pageContentView = View::make('new', array('defaultPingText' => $defaultPingText));
+		$pageContentView = View::make('new', array(
+			'defaultPingText' => $defaultPingText,
+			'pingGroups' => Auth::user()->getCanSend()
+		));
 
 		$this->layout = self::LAYOUT;
 		$view = View::make(self::LAYOUT)
@@ -85,52 +91,122 @@ class PingController extends BaseController
 		}
 		else
 		{
+			$groups = Auth::user()->getCanSend();
+			$slug = Input::get('pingGroup');
+			if(!isset($groups[$slug]))
+			{
+				return Redirect::route('add_timer')
+				               ->with('flash_error', 'That group does not exist or you don\'t have permission to send it messages.')
+				               ->withInput();
+			}
 
 			$ping_text = "\n".Input::get('pingText');
 
-			// Log Ping
+			// get group ID
+			if(Input::get('pingGroup', false))
+			{
+				$group = Group::where('key', '=', $key)->first();
+			}
+
 			$ping = Ping::create(array(
-				               'message' => $ping_text,
-				               'user_id' => Auth::user()->id,
-			               ));
-
-			// Config Details
-			$host = Config::get('jabber.server');
-			$user = Config::get('jabber.user');
-			$pass = Config::get('jabber.password');
-
-			// Create Client
-			$client = new JAXL(array(
-				'log_path' => './jaxl.log',
-				'jid' => $user.'@'.$host,
-				'pass' => $pass,
-				'log_level' => JAXL_ERROR
+				'message' => $ping_text,
+				'group_id' => $group->id,
+				'user_id' => Auth::user()->id,
 			));
 
-			// add logging text ot the bottom of the ping
-			$ping_text .= "\n\n##### SENT BY: ".Auth::user()->character_name." (".Auth::user()->alliance_name."); TO: online.all; WHEN: ".$ping->created_at." #####";
-
-			// Add Callbacks
-			$client->add_cb('on_auth_success', function() use ($host, $client, $ping_text) {
-				$client->send_chat_msg($host.'/announce/online', $ping_text);
-				$client->send_end_stream();
-			});
-			$client->add_cb('on_auth_failure', function($reason) use ($client)
+			$this->_sendLegacyPing($ping);
+			if(Input::get('pingGroup', false))
 			{
-				$client->send_end_stream();
-				_info("got on_auth_failure cb with reason: $reason");
-
-			});
-			$client->add_cb('on_disconnect', function() use ($client)
+				$this->_sendLegacyPing($ping);
+				$this->_sendGroupPing($ping, Input::get('pingGroup'));
+			}
+			else
 			{
-				_info("got on_disconnect cb");
-			});
-
-			// Startup Client
-			$client->start();
+				$this->_sendLegacyPing($ping);
+			}
 
 			// Redirect when complete
 			return Redirect::route('home')->with('flash_msg', 'Ping Was Sent!');
 		}
+	}
+
+	function _sendLegacyPing($ping)
+	{
+		// Config Details
+		$host = Config::get('jabber.legacy-server');
+		$user = Config::get('jabber.legacy-user');
+		$pass = Config::get('jabber.legacy-password');
+
+		// Create Client
+		$client = new JAXL(array(
+			'log_path' => './jaxl.log',
+			'jid' => $user.'@'.$host,
+			'pass' => $pass,
+			'log_level' => JAXL_ERROR
+		));
+
+		// add logging text to the bottom of the ping
+		$character_name = Auth::user()->character_name;
+		$alliance_name = Auth::user()->character_name;
+		$ping_text .= "\n{$ping->message}\n\n##### SENT BY: {$character_name} ({$alliance_name}); TO: online.all; WHEN: ".$ping->created_at." #####";
+
+		// Add Callbacks
+		$client->add_cb('on_auth_success', function() use ($host, $client, $ping_text) {
+			$client->send_chat_msg($host.'/announce/online', $ping_text);
+			$client->send_end_stream();
+		});
+		$client->add_cb('on_auth_failure', function($reason) use ($client)
+		{
+			$client->send_end_stream();
+			_info("got on_auth_failure cb with reason: $reason");
+
+		});
+		$client->add_cb('on_disconnect', function() use ($client)
+		{
+			_info("got on_disconnect cb");
+		});
+
+		// Startup Client
+		$client->start();
+	}
+
+	function _sendGroupPing($ping, $group)
+	{
+		// Config Details
+		$host = Config::get('jabber.server');
+		$user = Config::get('jabber.user');
+		$pass = Config::get('jabber.password');
+
+		// Create Client
+		$client = new JAXL(array(
+			'log_path' => './jaxl.log',
+			'jid' => $user.'@'.$host,
+			'pass' => $pass,
+			'log_level' => JAXL_ERROR
+		));
+
+		// add logging text ot the bottom of the ping
+		$character_name = Auth::user()->character_name;
+		$alliance_name = Auth::user()->character_name;
+		$ping_text .= "\n{$ping->message}\n\n##### SENT BY: {$character_name} ({$alliance_name}); TO: online.{$group}; WHEN: ".$ping->created_at." #####";
+
+		// Add Callbacks
+		$client->add_cb('on_auth_success', function() use ($host, $client, $ping_text) {
+			$client->send_chat_msg($host.'/announce/online', $ping_text);
+			$client->send_end_stream();
+		});
+		$client->add_cb('on_auth_failure', function($reason) use ($client)
+		{
+			$client->send_end_stream();
+			_info("got on_auth_failure cb with reason: $reason");
+
+		});
+		$client->add_cb('on_disconnect', function() use ($client)
+		{
+			_info("got on_disconnect cb");
+		});
+
+		// Startup Client
+		$client->start();
 	}
 }

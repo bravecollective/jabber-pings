@@ -75,7 +75,8 @@ class ApiUser extends Eloquent implements UserInterface {
 		{
 			if(substr($perm, 0, strlen($namespace.'send.')) == $namespace.'send.')
 			{
-				$groups[] = substr($perm, strlen($namespace.'send.'));
+				$slug = substr($perm, strlen($namespace.'send.'));
+				$groups[$slug] = $this->_mapGroupSlugToName($slug);
 			}
 		}
 
@@ -97,11 +98,29 @@ class ApiUser extends Eloquent implements UserInterface {
 		{
 			if(substr($perm, 0, strlen($namespace.'receive.')) == $namespace.'receive.')
 			{
-				$groups[] = substr($perm, strlen($namespace.'receive.'));
+				$slug = substr($perm, strlen($namespace.'receive.'));
+				$groups[$slug] = $this->_mapGroupSlugToName($slug);
 			}
 		}
 
+		// hardcoded hell, TODO: remove
+		if(empty($groups))
+		{
+			$groups_map = Config::get('ping-group-map');
+			$groups['hero'] = _mapGroupSlugToName('hero');
+		}
+
 		return $groups;
+	}
+
+	private function _mapGroupSlugToName($slug)
+	{
+		$names = Config::get('braveapi.ping-group-map');
+		if(isset($names[$slug]))
+		{
+			return $names[$slug];
+		}
+		return $slug;
 	}
 
 }

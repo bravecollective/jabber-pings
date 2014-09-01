@@ -12,9 +12,17 @@ return array(
 	|
 	*/
 
+	// legacy ejabberd server
+	'legacy-server' => '',   // must be HTTPS
+	'legacy-user' => '',   // must be HTTPS
+	'legacy-password' => '', // from core auth
+
+	// new hottness server
 	'server' => '',   // must be HTTPS
 	'user' => '',   // must be HTTPS
 	'password' => '', // from core auth
+
+
 	'default-text' => 'Fleet Name:
 FC:
 BRAVE Mumble, Channel:

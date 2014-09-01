@@ -22,6 +22,18 @@ if (Session::has('flash_error'))
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
+			<?php
+			if(!empty($pingGroups))
+			{
+				?>
+				<div class="form-group">
+					<?=Form::label('pingGroup', 'Ping to this Group')?>
+					<?=Form::select('pingGroup', $pingGroups, '', array('id' => 'pingGroup', 'class' => 'form-control'))?>
+				</div>
+				<?php
+			}
+			?>
+
 			<div class="form-group">
 				<?=Form::label('pingText', 'Ping Text')?>
 				<?=Form::textarea('pingText', $defaultPingText, array('id' => 'pingText', 'class' => 'form-control'))?>
