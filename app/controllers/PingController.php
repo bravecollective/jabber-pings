@@ -94,54 +94,64 @@ class PingController extends BaseController
 				->with('flash_error', 'Please fill in all Ping Information')
 				->withInput();
 		}
-		else
+
+		//
+		$groups = ApiUser::allCanSend(Auth::user());
+		$slug = Input::get('pingGroup');
+
+		//
+		if(!isset($groups[$slug]))
 		{
-			//
-			$groups = ApiUser::allCanSend(Auth::user());
-			$slug = Input::get('pingGroup');
-
-			//
-			if(!isset($groups[$slug]))
-			{
-				return Redirect::route('add_timer')
-				               ->with('flash_error', 'That group does not exist or you don\'t have permission to send it messages.')
-				               ->withInput();
-			}
-
-			// ping details
-			$ping_text = "\n".Input::get('pingText');
-			$ping_group = Input::get('pingGroup', false);
-
-			// get group ID
-			$group_id = 1;
-			if($ping_group !== false)
-			{
-				$group = Group::where('key', '=', Input::get('pingGroup'))->first();
-				$group_id = $group->id;
-			}
-
-			// save ping to DB
-			$ping = Ping::create(array(
-				'message' => $ping_text,
-				'group_id' => $group_id,
-				'user_id' => Auth::user()->id,
-			));
-
-			// send the group ping
-			if($ping_group !== false)
-			{
-				$this->_sendGroupPing($ping, Input::get('pingGroup'));
-			}
-
-			// requested ping to legacy server?
-			if(Input::get('legacyPing', false) === '1')
-			{
-				$this->_sendLegacyPing($ping);
-			}
-
-			// Redirect when complete
-			return Redirect::route('home')->with('flash_msg', 'Ping Was Sent!');
+			return Redirect::route('add_timer')
+			               ->with('flash_error', 'That group does not exist or you don\'t have permission to send it messages.')
+			               ->withInput();
 		}
+
+		//
+		if (Session::has('ping_last'))
+		{
+			$pingLast = Session::get('ping_last');
+			if ($pingLast > time() - 30) {
+				return Redirect::route('add_timer')
+					->with('flash_error', 'Please wait 30 seconds between sending pings!')
+					->withInput();
+			} 
+		}
+		Session::put('ping_last', time());
+
+		// ping details
+		$ping_text = "\n".Input::get('pingText');
+		$ping_group = Input::get('pingGroup', false);
+
+		// get group ID
+		$group_id = 1;
+		if($ping_group !== false)
+		{
+			$group = Group::where('key', '=', Input::get('pingGroup'))->first();
+			$group_id = $group->id;
+		}
+
+		// save ping to DB
+		$ping = Ping::create(array(
+			'message' => $ping_text,
+			'group_id' => $group_id,
+			'user_id' => Auth::user()->id,
+		));
+
+		// send the group ping
+		if($ping_group !== false)
+		{
+			$this->_sendGroupPing($ping, Input::get('pingGroup'));
+		}
+
+		// requested ping to legacy server?
+		if(Input::get('legacyPing', false) === '1')
+		{
+			$this->_sendLegacyPing($ping);
+		}
+
+		// Redirect when complete
+		return Redirect::route('home')->with('flash_msg', 'Ping Was Sent!');
 	}
 
 	function _sendLegacyPing(Ping $ping)
