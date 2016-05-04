@@ -80,6 +80,8 @@ class ApiUser extends Eloquent implements UserInterface {
 			}
 		}
 
+		asort($groups);
+
 		return $groups;
 	}
 
@@ -88,6 +90,8 @@ class ApiUser extends Eloquent implements UserInterface {
 		$groups = [];
 		$namespace = Config::get('braveapi.application-permission-namespace');
 		$perms = json_decode($user->user_permissions);
+
+		\Log::info($perms);
 
 		if($perms === null)
 		{
@@ -99,26 +103,28 @@ class ApiUser extends Eloquent implements UserInterface {
 			if(substr($perm, 0, strlen($namespace.'receive.')) == $namespace.'receive.')
 			{
 				$slug = substr($perm, strlen($namespace.'receive.'));
-				$groups[$slug] = self::_mapGroupSlugToName($slug);
+				$groups[$slug] = self::_mapGroupSlugToName($perm);
 			}
 		}
 
+		\Log::info(['user' => $user->character_name, 'resolved_groups' => $groups]);
+
 		// hardcoded hell, TODO: remove
-		if(empty($groups))
-		{
-			$groups_map = Config::get('ping-group-map');
-			$groups['hero'] = _mapGroupSlugToName('hero');
-		}
+		//if(empty($groups))
+		//{
+		//	$groups_map = Config::get('ping-group-map');
+		//	$groups['hero'] = _mapGroupSlugToName('hero');
+		//}
 
 		return $groups;
 	}
 
 	private static function _mapGroupSlugToName($slug)
 	{
-		$names = Config::get('braveapi.ping-group-map');
-		if(isset($names[$slug]))
+		$name = Group::where('key', '=', $slug)->take(1)->get();
+		if(!empty($name[0]))
 		{
-			return $names[$slug];
+			return $name[0]->name;
 		}
 		return $slug;
 	}

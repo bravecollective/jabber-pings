@@ -16,7 +16,6 @@ class ApiUserProvider implements UserProviderInterface {
 		try
 		{
 			$user = ApiUser::where('token', '=', $credentials['token'])->get();
-
 			if(isset($user[0]))
 			{
 				return $user[0];
@@ -26,15 +25,14 @@ class ApiUserProvider implements UserProviderInterface {
 				$api = new Brave\API(Config::get('braveapi.application-endpoint'), Config::get('braveapi.application-identifier'), Config::get('braveapi.local-private-key'), Config::get('braveapi.remote-public-key'));
 				$result = $api->core->info(array('token' => $credentials['token']));
 
-				//
 				if(!isset($result->character->name))
 				{
 					return Redirect::route('logintest')
 					               ->with('flash_error', 'Login Failed, Please Try Again');
 				}
 
-				//
 				$user = $this->updateUser($credentials['token'], $result);
+
 				return $user;
 			}
 		}
@@ -46,6 +44,7 @@ class ApiUserProvider implements UserProviderInterface {
 			echo "Credentials:\n";
 			var_dump($credentials);
 			echo "\n\n";
+//			var_dump($e->getTrace());
 			exit;
 			return null;
 		}
@@ -93,15 +92,14 @@ class ApiUserProvider implements UserProviderInterface {
 	{
 		// validate permissions
 		$permission = 0;
-		foreach(Config::get('braveapi.auth-edit-tags') as $tag)
-		{
-			if(in_array($tag, $result->tags)) // check for special group
-			{
-				$permission = 1;
-				break;
-			}
-		}
-
+		//foreach(Config::get('braveapi.auth-edit-tags') as $tag)
+		//{
+		//	if(in_array($tag, $result->tags)) // check for special group
+		//	{
+		//		$permission = 1;
+		//		break;
+		//	}
+		//}
 		// per user overrides
 		foreach(Config::get('braveapi.auth-edit-users') as $id)
 		{
@@ -114,23 +112,45 @@ class ApiUserProvider implements UserProviderInterface {
 
 		// Get alliance info
 		$api = new Brave\API(Config::get('braveapi.application-endpoint'), Config::get('braveapi.application-identifier'), Config::get('braveapi.local-private-key'), Config::get('braveapi.remote-public-key'));
-		$alliance_result = $api->lookup->alliance(array('search' => $result->alliance->id, 'only' => 'short'));
+//		$ashort = "";
+//		if ($result->alliance) {
+//		    $alliance_result = $api->lookup->alliance(array('search' => $result->alliance->id, 'only' => 'short'));
+//		    $ashort = $alliance_result->short;
+//		}
 
 		// filter permissions and save only the relevant ones
 		$relevant_perms = [];
 		$perms = $result->perms;
+
 		$namespace = Config::get('braveapi.application-permission-namespace');
 		foreach($perms as $perm)
 		{
 			// discard 'core' root namespaces permissions
 			if(substr($perm, 0, 5) != 'core.')
 			{
-				echo substr($perm, 0, strlen($namespace)), ' == ', $namespace, "\n";
+				// echo substr($perm, 0, strlen($namespace)), ' == ', $namespace, "\n";
 				if(substr($perm, 0, strlen($namespace)) == $namespace)
 				{
 					$relevant_perms[] = $perm;
 					$key = explode('.', $perm);
-					$key = end($key);
+                    if($key[1] == "send")
+                    {
+                        $permission = 1;
+                    }
+
+					$key = '';
+                    // do horrible things
+                    $check = strpos($perm, 'ping.receive.');
+                    if ($check) {
+                    	$key = substr($perm, 12);
+                    }
+
+                    $check = strpos($perm, 'ping.send.');
+                    if ($check) {
+                    	$key = substr($perm, 9);
+                    }
+
+					//$key = end($key);
 					Group::firstOrCreate(array('key' => strtolower($key)));
 				}
 			}
@@ -155,9 +175,9 @@ class ApiUserProvider implements UserProviderInterface {
 				'token' => $token,
 				'remember_token' => '',
 				'character_name' => $result->character->name,
-				'alliance_id' => $result->alliance->id,
-				'alliance_name' => $result->alliance->name,
-				'alliance_ticker' => $alliance_result->short,
+				'alliance_id' => ($result->alliance) ? $result->alliance->id : 0,
+				'alliance_name' => ($result->alliance) ? $result->alliance->name : "",
+//				'alliance_ticker' => $ashort,
 				'user_permissions' => $relevant_perms,
 				'tags' => json_encode($result->tags),
 				'status' => 1,
@@ -171,8 +191,9 @@ class ApiUserProvider implements UserProviderInterface {
 			$userfound->permission = $permission;
 			$userfound->token = $token;
 			$userfound->character_name = $result->character->name;
-			$userfound->alliance_id = $result->alliance->id;
-			$userfound->alliance_name = $result->alliance->name;
+			$userfound->alliance_id = ($result->alliance) ? $result->alliance->id : 0;
+			$userfound->alliance_name = ($result->alliance) ? $result->alliance->name : "";
+//			$userfound->alliance_ticker = $ashort;
 			$userfound->user_permissions = $relevant_perms;
 			$userfound->tags = json_encode($result->tags);
 			$userfound->status = 1;

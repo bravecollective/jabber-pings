@@ -35,6 +35,7 @@ if (Session::has('flash_msg'))
 					<tr>
 						<th>Name</th>
 						<th>Date</th>
+						<th>Group</th>
 						<th style="width: 60%;">Message</th>
 						<th>Actions</th>
 					</tr>
@@ -48,6 +49,7 @@ if (Session::has('flash_msg'))
 					<tr>
 						<td><?=$user->character_name?> (<?=$user->alliance_name?>)</td>
 						<td><?=$ping->created_at?></td>
+						<td><?=$ping_map[$ping->group->key]?></td>
 						<td><pre><?=$ping->message?></pre></td>
 						<td>
 							<a href="#" class="btn btn-info btn-xs viewPing">View Text</a>

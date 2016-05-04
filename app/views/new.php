@@ -21,6 +21,17 @@ if (Session::has('flash_error'))
 <?=Form::open(array('route' => array('add_timer')))?>
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+			<div class="alert alert-danger">
+				If you send <strong>shit pings</strong> you <strong>will be banned from sending pings.</strong>. 
+				Use the template, it's there for a reason. <strong>Also, don't spam newlines in your pings or you'll have your ping rights revoked.</strong> 
+				Make sure you send your pings to the correct group. <br /><br />
+				<strong>This isn't hard.</strong> Don't be a dick.
+			
+			</div>
+
+			<div class="alert alert-warning">
+				If you are a FC: Please don't forget to <strong><a href="https://evetools.org/not_pap/" target="_blank">notpap</a></strong>!
+			</div>
 
 			<?php
 			if(!empty($pingGroups))
@@ -32,10 +43,6 @@ if (Session::has('flash_error'))
 				</div>
 				<?php
 			}
-			else
-			{
-				echo Form::hidden('pingGroup', 'hero');
-			}
 			?>
 
 			<div class="form-group">
@@ -43,36 +50,10 @@ if (Session::has('flash_error'))
 				<?=Form::textarea('pingText', $defaultPingText, array('id' => 'pingText', 'class' => 'form-control'))?>
 			</div>
 
-			<?php
-			if(!empty($pingGroups))
-			{
-			?>
-				<div class="checkbox">
-					<?=Form::hidden('legacyPing', '0')?>
-					<label>
-						<?=Form::checkbox('legacyPing', 1, true, array('id' => 'legacyPing'))?>
-						Ping To Old Jabber Server?
-					</label>
-				</div>
-			<?php
-			}
-			else
-			{
-				echo Form::hidden('legacyPing', '1');
-			}
-			?>
-
 			<div class="form-group">
-				<button type="submit" class="btn btn-primary">Send Ping</button>
+				<button type="submit" class="btn btn-primary">Send This Ping</button>
 			</div>
 
 		</div>
 	</div>
 </form>
-
-<script type="text/javascript">
-	$(document).ready(function()
-	{
-		//$('#timeExiting').datetimepicker();
-	});
-</script>

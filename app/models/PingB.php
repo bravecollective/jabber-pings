@@ -35,13 +35,7 @@ class Ping extends Eloquent{
 	 */
 	protected $fillable = array(
 		'user_id',
-                'group_id',
 		'message'
 	);
-
-	public function group()
-	{
-		return $this->hasOne('Group', 'id', 'group_id');
-	}
 
 }

@@ -18,6 +18,8 @@ Route::group(array('before' => 'guest'), function()
 	Route::post('login', array('uses' => 'LoginController@loginAction'));
 
 	Route::get('info', array('as' => 'info', 'uses' => 'LoginController@infoAction'));
+
+	Route::post('api/sendMuc', array('as' => 'sendMuc', 'uses' => 'ApiController@apiSendMucMessage'));
 });
 
 // LOGIN REQUIRED ROUTES
